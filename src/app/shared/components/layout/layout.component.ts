@@ -1,5 +1,6 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastStackComponent } from '../toast-stack/toast-stack.component';
@@ -9,7 +10,7 @@ import { ReciboService } from '../../../core/services/recibo.service';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TitleCasePipe, BreadcrumbsComponent, ToastStackComponent, ReciboModalComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TitleCasePipe, NgOptimizedImage, BreadcrumbsComponent, ToastStackComponent, ReciboModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -18,13 +19,10 @@ import { ReciboService } from '../../../core/services/recibo.service';
       <aside class="sidebar">
         <div class="sidebar-header">
           <div class="brand">
-            <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
-              <rect width="48" height="48" rx="12" fill="var(--brand)"/>
-              <path d="M14 24h20M24 14v20M18 18l12 12M30 18L18 30"
-                    stroke="var(--brand-contrast, #0d1000)" stroke-width="2.5" stroke-linecap="round"/>
-            </svg>
-            @if (!collapsed()) {
-              <span class="brand-name">Fitness Factory</span>
+            @if (collapsed()) {
+              <img ngSrc="/logo.png" alt="Fitness Factory" width="36" height="36" class="logo-icon" priority />
+            } @else {
+              <img ngSrc="/logo horizontal.png" alt="Fitness Factory" width="160" height="36" class="logo-horizontal" priority />
             }
           </div>
           <button class="btn-collapse" (click)="toggleSidebar()" [attr.aria-label]="collapsed() ? 'Expandir barra lateral' : 'Colapsar barra lateral'">
@@ -197,10 +195,18 @@ import { ReciboService } from '../../../core/services/recibo.service';
       gap: 0.75rem;
     }
 
-    .brand-name {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text-primary, #f1f5f9);
+    .logo-horizontal {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      display: block;
     }
 
     .skip-link {
@@ -354,8 +360,11 @@ import { ReciboService } from '../../../core/services/recibo.service';
       .sidebar {
         width: 72px;
       }
-      .brand-name, .user-details, .nav-item span {
-        display: none;
+      .logo-horizontal, .user-details, .nav-item span {
+        display: none !important;
+      }
+      .logo-icon {
+        display: block !important;
       }
       .main-content {
         margin-left: 72px;

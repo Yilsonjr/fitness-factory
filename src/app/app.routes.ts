@@ -94,11 +94,13 @@ export const routes: Routes = [
           },
           {
             path: 'nuevo',
+            canActivate: [adminGuard],
             loadComponent: () =>
               import('./features/productos/formulario/producto-form.component').then(m => m.ProductoFormComponent),
           },
           {
             path: ':id/editar',
+            canActivate: [adminGuard],
             loadComponent: () =>
               import('./features/productos/formulario/producto-form.component').then(m => m.ProductoFormComponent),
           },

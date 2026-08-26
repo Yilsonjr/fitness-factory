@@ -172,4 +172,34 @@ export class ClientesService {
 
     return data.publicUrl;
   }
+
+  async obtenerPlantillasHuella(): Promise<{ id: string; template: string }[]> {
+    const { data } = await this.supabase.client
+      .from('clientes')
+      .select('id, huella_template')
+      .eq('activo', true)
+      .not('huella_template', 'is', null);
+
+    return ((data ?? []) as { id: string; huella_template: string }[])
+      .map(c => ({ id: c.id, template: c.huella_template }));
+  }
+
+  async guardarHuella(clienteId: string, templateBase64: string | null): Promise<{ error: string | null }> {
+    const { error } = await this.supabase.client
+      .from('clientes')
+      .update({ huella_template: templateBase64 })
+      .eq('id', clienteId);
+    return { error: error?.message ?? null };
+  }
+
+  async registrarAsistencia(clienteId: string, metodo: 'huella' | 'manual', autorizado: boolean): Promise<void> {
+    const gimnasioId = this.auth.gimnasioId();
+    if (!gimnasioId) return;
+    await this.supabase.client.from('asistencias').insert({
+      gimnasio_id: gimnasioId,
+      cliente_id: clienteId,
+      metodo,
+      autorizado,
+    });
+  }
 }

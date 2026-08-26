@@ -49,6 +49,7 @@ export interface Cliente {
   telefono_emergencia?: string;
   notas?: string;
   activo: boolean;
+  huella_template?: string | null;
   created_at: string;
   updated_at: string;
   // Relaciones virtuales (joins)

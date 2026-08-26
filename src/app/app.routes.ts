@@ -200,5 +200,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
+  {
+    path: 'acceso',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/acceso/acceso-kiosk.component').then(m => m.AccesoKioskComponent),
+  },
   { path: '**', redirectTo: 'login' },
 ];

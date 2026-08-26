@@ -1,1 +1,30 @@
 :host { display: block; }
+
+.huella-section .section-head { margin-bottom: var(--space-4); }
+
+.huella-status {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  padding: .35rem .9rem;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+}
+
+.huella-status.registered {
+  background: var(--color-success-subtle);
+  color: var(--color-success-text);
+}
+
+.huella-status.pending {
+  background: var(--color-neutral-subtle);
+  color: var(--text-secondary);
+}
+
+.huella-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}

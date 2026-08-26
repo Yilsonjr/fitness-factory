@@ -92,6 +92,17 @@ import { ReciboService } from '../../../core/services/recibo.service';
             @if (!collapsed()) { <span>Productos</span> }
           </a>
 
+          <a routerLink="/acceso" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Acceso biométrico' : null">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 2C9.5 2 7.5 4 7.5 7c0 4 4.5 9 4.5 9s4.5-5 4.5-9c0-3-2-5-4.5-5z"/>
+              <line x1="9.5" y1="7" x2="9.5" y2="13"/>
+              <line x1="11" y1="6" x2="11" y2="14"/>
+              <line x1="12.5" y1="5.5" x2="12.5" y2="14"/>
+              <line x1="14" y1="6.5" x2="14" y2="13"/>
+            </svg>
+            @if (!collapsed()) { <span>Acceso</span> }
+          </a>
+
           @if (auth.isAdmin()) {
             <div class="nav-divider"></div>
 

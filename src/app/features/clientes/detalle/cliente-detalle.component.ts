@@ -5,6 +5,8 @@ import { ClientesService } from '../../../core/services/clientes.service';
 import { CajaService } from '../../../core/services/caja.service';
 import { MembresiasService } from '../../../core/services/membresias.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { ZKTecoService } from '../../../core/services/zkteco.service';
 import { Cliente, Membresia, Pago } from '../../../core/models';
 import { CurrencyDopPipe } from '../../../shared/pipes/currency-dop.pipe';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -248,6 +250,52 @@ type PagoVista = Pago & { membresia?: { id: string; fecha_inicio: string; fecha_
             </app-confirm-dialog>
           }
         </section>
+        @if (auth.isAdmin()) {
+          <section class="card huella-section">
+            <div class="section-head">
+              <div>
+                <h2>Huella digital</h2>
+                <p class="section-note">Registra la huella para acceso biométrico automático por el kiosk.</p>
+              </div>
+            </div>
+
+            @if (cliente()?.huella_template) {
+              <div class="huella-status registered">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Huella registrada
+              </div>
+            } @else {
+              <div class="huella-status pending">Sin huella registrada</div>
+            }
+
+            @if (huellaError()) {
+              <div class="banner error" role="alert">{{ huellaError() }}</div>
+            }
+            @if (huellaExito()) {
+              <div class="banner" role="status" aria-live="polite">{{ huellaExito() }}</div>
+            }
+
+            <div class="huella-actions">
+              <button
+                class="btn-primary"
+                [disabled]="capturandoHuella()"
+                (click)="capturarHuella()"
+              >
+                @if (capturandoHuella()) {
+                  Esperando dedo… ({{ huellaContador() }}s)
+                } @else {
+                  {{ cliente()?.huella_template ? 'Reemplazar huella' : 'Registrar huella' }}
+                }
+              </button>
+              @if (cliente()?.huella_template) {
+                <button class="btn-secondary" [disabled]="capturandoHuella()" (click)="eliminarHuella()">Eliminar huella</button>
+              }
+            </div>
+          </section>
+        }
+
       } @else {
         <div class="card">Cliente no encontrado.</div>
       }
@@ -267,6 +315,10 @@ export class ClienteDetalleComponent implements OnInit {
   anulacionMensaje = signal('');
   anulacionError = signal(false);
   savingMembresia = signal(false);
+  capturandoHuella = signal(false);
+  huellaError = signal('');
+  huellaExito = signal('');
+  huellaContador = signal(0);
 
   currentMembership = computed(() => {
     const list = this.memberships();
@@ -284,13 +336,17 @@ export class ClienteDetalleComponent implements OnInit {
 
   private id = '';
 
+  private _huellaTimer: ReturnType<typeof setInterval> | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private clientes: ClientesService,
     private caja: CajaService,
     private membresias: MembresiasService,
-    private toast: ToastService
+    private toast: ToastService,
+    public auth: AuthService,
+    private zk: ZKTecoService,
   ) {}
 
   async ngOnInit() {
@@ -418,6 +474,60 @@ export class ClienteDetalleComponent implements OnInit {
     await this.membresias.reactivarMembresia(current.id);
     this.savingMembresia.set(false);
     this.toast.success('Membresía reactivada', 'La membresía volvió a estar activa.');
+    await this.cargar();
+  }
+
+  async capturarHuella() {
+    if (this.capturandoHuella()) return;
+    this.huellaError.set('');
+    this.huellaExito.set('');
+
+    await this.zk.inicializar();
+
+    if (this.zk.esModoSimulacion()) {
+      this.huellaError.set('El lector biométrico no está conectado. Conecta el lector ZKTeco e intenta de nuevo.');
+      return;
+    }
+
+    this.capturandoHuella.set(true);
+    this.huellaContador.set(15);
+    this._huellaTimer = setInterval(() => {
+      const v = this.huellaContador() - 1;
+      if (v <= 0) {
+        if (this._huellaTimer) { clearInterval(this._huellaTimer); this._huellaTimer = null; }
+      }
+      this.huellaContador.set(v);
+    }, 1000);
+
+    const { template, error } = await this.zk.capturarTemplate();
+
+    if (this._huellaTimer) { clearInterval(this._huellaTimer); this._huellaTimer = null; }
+    this.capturandoHuella.set(false);
+
+    if (error || !template) {
+      this.huellaError.set(error ?? 'No se pudo capturar la huella. Intenta de nuevo.');
+      return;
+    }
+
+    const { error: saveError } = await this.clientes.guardarHuella(this.id, template);
+    if (saveError) {
+      this.huellaError.set('Huella capturada pero no se pudo guardar: ' + saveError);
+      return;
+    }
+
+    this.huellaExito.set('Huella registrada exitosamente.');
+    this.toast.success('Huella registrada', 'El cliente puede acceder con su huella.');
+    await this.cargar();
+  }
+
+  async eliminarHuella() {
+    const { error } = await this.clientes.guardarHuella(this.id, null);
+    if (error) {
+      this.huellaError.set('No se pudo eliminar la huella: ' + error);
+      return;
+    }
+    this.huellaExito.set('Huella eliminada.');
+    this.toast.warning('Huella eliminada', 'El cliente ya no puede acceder con huella.');
     await this.cargar();
   }
 }

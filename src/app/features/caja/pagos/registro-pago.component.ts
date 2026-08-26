@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { CajaService } from '../../../core/services/caja.service';
 import { ClientesService } from '../../../core/services/clientes.service';
 import { MembresiasService } from '../../../core/services/membresias.service';
+import { ReciboService } from '../../../core/services/recibo.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Cliente, Plan, PagoForm } from '../../../core/models';
 import { ClientSearchComponent, ClienteBusqueda } from '../../../shared/components/client-search/client-search.component';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
@@ -44,6 +46,8 @@ export class RegistroPagoComponent implements OnInit {
     private caja: CajaService,
     private clientes: ClientesService,
     public membresias: MembresiasService,
+    private reciboService: ReciboService,
+    private auth: AuthService,
   ) {}
 
   async ngOnInit() {
@@ -139,6 +143,24 @@ export class RegistroPagoComponent implements OnInit {
 
     this.isError.set(false);
     this.message.set(plan ? 'Membresía asignada y cobro registrado.' : 'Cobro registrado correctamente.');
+
+    const cliente = this.clienteSeleccionado()!;
+    const montoFinal = payload.monto;
+    const metodoFinal = payload.metodo;
+    const conceptoFinal = payload.concepto;
+    const usuario = this.auth.usuario();
+
+    await this.reciboService.mostrar({
+      tipo: plan ? 'membresia' : 'cobro',
+      numero: Date.now().toString(36).toUpperCase(),
+      fecha: new Date(),
+      clienteNombre: `${cliente.nombre} ${cliente.apellido}`,
+      items: [{ descripcion: conceptoFinal, precio: montoFinal }],
+      total: montoFinal,
+      metodo: metodoFinal,
+      cajero: usuario?.nombre ?? '',
+    });
+
     this.clienteSeleccionado.set(null);
     this.clienteData.set(null);
     this.planSeleccionado.set(null);

@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ClientesService } from '../../../core/services/clientes.service';
 import { MembresiasService } from '../../../core/services/membresias.service';
+import { ReciboService } from '../../../core/services/recibo.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Cliente, Plan, MembresiaForm, MetodoPago } from '../../../core/models';
 import { ClientSearchComponent, ClienteBusqueda } from '../../../shared/components/client-search/client-search.component';
 import { CurrencyDopPipe } from '../../../shared/pipes/currency-dop.pipe';
@@ -134,7 +136,9 @@ export class MembresiaFormComponent implements OnInit {
     public membresias: MembresiasService,
     private clientes: ClientesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private reciboService: ReciboService,
+    private auth: AuthService,
   ) {}
 
   async ngOnInit() {
@@ -190,6 +194,21 @@ export class MembresiaFormComponent implements OnInit {
 
     this.isError.set(false);
     this.message.set('Membresía asignada correctamente.');
+
+    const plan = this.selectedPlan()!;
+    const cliente = this.clienteSeleccionado()!;
+    const usuario = this.auth.usuario();
+    await this.reciboService.mostrar({
+      tipo: 'membresia',
+      numero: Date.now().toString(36).toUpperCase(),
+      fecha: new Date(),
+      clienteNombre: `${cliente.nombre} ${cliente.apellido}`,
+      items: [{ descripcion: `Membresía ${plan.nombre}`, precio: plan.precio }],
+      total: plan.precio,
+      metodo: this.form.metodo_pago,
+      cajero: usuario?.nombre ?? '',
+    });
+
     await this.router.navigate(['/clientes', this.form.cliente_id]);
   }
 }

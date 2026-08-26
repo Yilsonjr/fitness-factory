@@ -4,10 +4,12 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastStackComponent } from '../toast-stack/toast-stack.component';
 import { BreadcrumbsComponent } from '../breadcrumbs/breadcrumbs.component';
+import { ReciboModalComponent } from '../recibo-modal/recibo-modal.component';
+import { ReciboService } from '../../../core/services/recibo.service';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TitleCasePipe, BreadcrumbsComponent, ToastStackComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TitleCasePipe, BreadcrumbsComponent, ToastStackComponent, ReciboModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -141,6 +143,7 @@ import { BreadcrumbsComponent } from '../breadcrumbs/breadcrumbs.component';
       </main>
 
       <app-toast-stack />
+      @if (reciboService.recibo()) { <app-recibo-modal /> }
     </div>
   `,
   styles: [`
@@ -365,7 +368,7 @@ import { BreadcrumbsComponent } from '../breadcrumbs/breadcrumbs.component';
 export class LayoutComponent {
   collapsed = signal(false);
 
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService, public reciboService: ReciboService) {}
 
   toggleSidebar() {
     this.collapsed.update(v => !v);

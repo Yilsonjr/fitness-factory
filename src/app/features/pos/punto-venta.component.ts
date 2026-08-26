@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { ProductosService } from '../../core/services/productos.service';
 import { VentasService } from '../../core/services/ventas.service';
 import { CajaService } from '../../core/services/caja.service';
+import { ReciboService } from '../../core/services/recibo.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Producto, ItemVenta, MetodoPago, Venta } from '../../core/models';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
@@ -222,6 +224,8 @@ export class PuntoVentaComponent implements OnInit {
     private ventas: VentasService,
     private caja: CajaService,
     private toast: ToastService,
+    private reciboService: ReciboService,
+    private auth: AuthService,
   ) {}
 
   async ngOnInit() {
@@ -293,6 +297,27 @@ export class PuntoVentaComponent implements OnInit {
     this.isError.set(false);
     this.mensaje.set('Venta registrada correctamente.');
     this.toast.success('Venta registrada', `Se cobró ${this.formatCurrency(this.total())}.`);
+
+    const carritoActual = this.carrito();
+    const totalActual = this.total();
+    const metodoActual = this.metodo;
+    const usuario = this.auth.usuario();
+
+    await this.reciboService.mostrar({
+      tipo: 'venta',
+      numero: Date.now().toString(36).toUpperCase(),
+      fecha: new Date(),
+      clienteNombre: 'Cliente general',
+      items: carritoActual.map(i => ({
+        descripcion: i.producto.nombre,
+        cantidad: i.cantidad,
+        precio: i.producto.precio * i.cantidad,
+      })),
+      total: totalActual,
+      metodo: metodoActual,
+      cajero: usuario?.nombre ?? '',
+    });
+
     this.carrito.set([]);
     await this.service.cargarProductos();
     if (this.caja.turnoActual()?.id) {

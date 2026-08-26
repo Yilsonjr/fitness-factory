@@ -9,7 +9,6 @@ type VentaVista = { id: string; fecha: string; total: number; metodo: string; cl
 
 @Component({
   selector: 'app-reportes-ventas',
-  standalone: true,
   imports: [RouterLink, CurrencyDopPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

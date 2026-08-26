@@ -17,7 +17,7 @@ import { AuthService } from '../../../core/services/auth.service';
         </div>
 
         @if (errorMsg()) {
-          <div class="error-banner" role="status" aria-live="polite">
+          <div class="error-banner" role="alert" aria-live="assertive">
             {{ errorMsg() }}
           </div>
         }

@@ -10,7 +10,6 @@ type MembresiaVista = { id: string; fecha_fin: string; estado: string; precio_pa
 
 @Component({
   selector: 'app-reportes-membresias',
-  standalone: true,
   imports: [StatusBadgeComponent, CurrencyDopPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

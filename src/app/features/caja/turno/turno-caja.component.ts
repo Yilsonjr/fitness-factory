@@ -215,7 +215,7 @@ export class TurnoCajaComponent implements OnInit {
   }
 
   async registrarGasto() {
-    if (!this.gastoMonto || !this.gastoConcepto.trim()) return;
+    if (!this.gastoMonto || Number(this.gastoMonto) <= 0 || !this.gastoConcepto.trim()) return;
     const { error } = await this.caja.registrarGasto(Number(this.gastoMonto), this.gastoConcepto.trim());
     if (!error) {
       this.gastoMonto = 0;

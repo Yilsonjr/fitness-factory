@@ -10,10 +10,12 @@ export class ProductosService {
 
   productos = signal<Producto[]>([]);
   categorias = signal<CategoriaProducto[]>([]);
+  loading = signal(false);
 
   async cargarProductos(incluirInactivos = false) {
     const gimnasioId = this.auth.gimnasioId();
     if (!gimnasioId) return;
+    this.loading.set(true);
     let q = this.supabase.client
       .from('productos')
       .select('*, categoria:categorias_producto(id, nombre)')
@@ -22,6 +24,7 @@ export class ProductosService {
     if (!incluirInactivos) q = q.eq('activo', true);
     const { data } = await q;
     this.productos.set((data as Producto[]) ?? []);
+    this.loading.set(false);
   }
 
   async cargarCategorias() {
@@ -100,7 +103,10 @@ export class ProductosService {
     let newStock = currentStock;
     if (form.tipo === 'entrada') newStock += form.cantidad;
     else if (form.tipo === 'ajuste') newStock = form.cantidad;
-    else if (form.tipo === 'merma') newStock = Math.max(0, currentStock - form.cantidad);
+    else if (form.tipo === 'merma') {
+      if (form.cantidad > currentStock) return { error: `Stock insuficiente. Stock actual: ${currentStock}` };
+      newStock = currentStock - form.cantidad;
+    }
 
     const { error: stockError } = await this.supabase.client
       .from('productos')

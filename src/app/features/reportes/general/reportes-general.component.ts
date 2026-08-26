@@ -7,7 +7,6 @@ import { SkeletonListComponent } from '../../../shared/components/skeleton/skele
 
 @Component({
   selector: 'app-reportes-general',
-  standalone: true,
   imports: [CurrencyDopPipe, SkeletonListComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -66,7 +65,7 @@ export class ReportesGeneralComponent {
     const hasta = this.periodo.hasta();
 
     const [pagos, gastos, ventas, clientes] = await Promise.all([
-      this.supabase.client.from('pagos').select('monto').eq('gimnasio_id', gimnasioId).gte('fecha', desde).lte('fecha', hasta + 'T23:59:59'),
+      this.supabase.client.from('pagos').select('monto').eq('gimnasio_id', gimnasioId).eq('anulado', false).gte('fecha', desde).lte('fecha', hasta + 'T23:59:59'),
       this.supabase.client.from('gastos').select('monto').eq('gimnasio_id', gimnasioId).gte('fecha', desde).lte('fecha', hasta + 'T23:59:59'),
       this.supabase.client.from('ventas').select('total').eq('gimnasio_id', gimnasioId).eq('anulado', false).gte('fecha', desde).lte('fecha', hasta + 'T23:59:59'),
       this.supabase.client.from('clientes').select('id', { count: 'exact', head: true }).eq('gimnasio_id', gimnasioId).gte('created_at', desde).lte('created_at', hasta + 'T23:59:59'),

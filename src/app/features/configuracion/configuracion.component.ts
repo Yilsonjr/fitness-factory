@@ -4,7 +4,6 @@ import { SecondaryNavComponent } from '../../shared/components/secondary-nav/sec
 
 @Component({
   selector: 'app-configuracion',
-  standalone: true,
   imports: [RouterOutlet, SecondaryNavComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

@@ -57,9 +57,12 @@ export class VentasService {
         .eq('id', item.producto.id)
         .single();
       const current = (prod as { stock: number } | null)?.stock ?? 0;
+      if (item.cantidad > current) {
+        return { ventaId: null, error: `Stock insuficiente para "${item.producto.nombre}". Disponible: ${current}` };
+      }
       await this.supabase.client
         .from('productos')
-        .update({ stock: Math.max(0, current - item.cantidad) })
+        .update({ stock: current - item.cantidad })
         .eq('id', item.producto.id);
     }
 

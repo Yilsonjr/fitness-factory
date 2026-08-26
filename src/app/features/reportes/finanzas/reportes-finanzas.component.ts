@@ -8,7 +8,6 @@ type Movimiento = { fecha: string; monto: number; concepto?: string; metodo?: st
 
 @Component({
   selector: 'app-reportes-finanzas',
-  standalone: true,
   imports: [CurrencyDopPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -97,7 +96,7 @@ export class ReportesFinanzasComponent {
     const desde = this.periodo.desde();
     const hasta = this.periodo.hasta();
     const [pagos, gastos] = await Promise.all([
-      this.supabase.client.from('pagos').select('fecha,monto,concepto,metodo').eq('gimnasio_id', gimnasioId).gte('fecha', desde).lte('fecha', hasta + 'T23:59:59').order('fecha', { ascending: false }),
+      this.supabase.client.from('pagos').select('fecha,monto,concepto,metodo').eq('gimnasio_id', gimnasioId).eq('anulado', false).gte('fecha', desde).lte('fecha', hasta + 'T23:59:59').order('fecha', { ascending: false }),
       this.supabase.client.from('gastos').select('fecha,monto,concepto').eq('gimnasio_id', gimnasioId).gte('fecha', desde).lte('fecha', hasta + 'T23:59:59').order('fecha', { ascending: false }),
     ]);
 

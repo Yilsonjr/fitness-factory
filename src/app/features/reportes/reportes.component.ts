@@ -6,7 +6,6 @@ import { ReportPeriodService } from '../../core/services/report-period.service';
 
 @Component({
   selector: 'app-reportes',
-  standalone: true,
   imports: [FormsModule, RouterOutlet, SecondaryNavComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

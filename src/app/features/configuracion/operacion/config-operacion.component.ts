@@ -6,7 +6,6 @@ import { ConfigSistema } from '../../../core/models';
 
 @Component({
   selector: 'app-config-operacion',
-  standalone: true,
   imports: [FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

@@ -7,7 +7,6 @@ import { SkeletonListComponent } from '../../../shared/components/skeleton/skele
 
 @Component({
   selector: 'app-config-general',
-  standalone: true,
   imports: [FormsModule, SkeletonListComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

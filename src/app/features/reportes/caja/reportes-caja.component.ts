@@ -8,7 +8,6 @@ type TurnoVista = { id: string; monto_apertura: number; monto_cierre?: number; e
 
 @Component({
   selector: 'app-reportes-caja',
-  standalone: true,
   imports: [CurrencyDopPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

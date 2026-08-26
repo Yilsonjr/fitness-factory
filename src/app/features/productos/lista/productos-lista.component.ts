@@ -45,7 +45,7 @@ import { CurrencyDopPipe } from '../../../shared/pipes/currency-dop.pipe';
         </div>
       </section>
 
-      @if (service.productos().length === 0) {
+      @if (service.loading()) {
         <div class="card loading-card">
           <app-skeleton-list [items]="[
             { width: '40%', height: '1.4rem' },

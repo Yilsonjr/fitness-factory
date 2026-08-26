@@ -10,7 +10,6 @@ type VistaAcceso = 'usuarios' | 'roles';
 
 @Component({
   selector: 'app-config-usuarios',
-  standalone: true,
   imports: [FormsModule, StatusBadgeComponent, SkeletonListComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

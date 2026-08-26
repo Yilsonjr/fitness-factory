@@ -11,7 +11,6 @@ type PlanEditable = Plan;
 
 @Component({
   selector: 'app-config-membresias',
-  standalone: true,
   imports: [FormsModule, StatusBadgeComponent, SkeletonListComponent, CurrencyDopPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

@@ -10,7 +10,6 @@ export interface SecondaryNavItem {
 
 @Component({
   selector: 'app-secondary-nav',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

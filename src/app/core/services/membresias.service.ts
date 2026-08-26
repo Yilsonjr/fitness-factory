@@ -56,6 +56,14 @@ export class MembresiasService {
     const gimnasioId = this.auth.gimnasioId();
     if (!gimnasioId) return { error: 'Sin gimnasio asignado' };
 
+    // Verificar que el cliente está activo
+    const { data: cliente } = await this.supabase.client
+      .from('clientes')
+      .select('activo')
+      .eq('id', form.cliente_id)
+      .single();
+    if (!cliente?.activo) return { error: 'El cliente está desactivado' };
+
     // Obtener plan para calcular fecha_fin y precio
     const plan = this._planes().find(p => p.id === form.plan_id);
     if (!plan) return { error: 'Plan no encontrado' };
@@ -115,6 +123,13 @@ export class MembresiasService {
 
     const plan = this._planes().find(p => p.id === planId);
     if (!plan) return { membresiaId: null, error: 'Plan no encontrado' };
+
+    const { data: cliente } = await this.supabase.client
+      .from('clientes')
+      .select('activo')
+      .eq('id', clienteId)
+      .single();
+    if (!cliente?.activo) return { membresiaId: null, error: 'El cliente está desactivado' };
 
     const fechaInicioDate = new Date(fechaInicio);
     const fechaFin = new Date(fechaInicioDate);

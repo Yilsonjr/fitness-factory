@@ -1,0 +1,168 @@
+/* ============================================================
+   DESIGN TOKENS — FITNESS FACTORY
+   Única fuente de verdad para todos los valores visuales.
+
+   IDENTIDAD: Charcoal + Graphite + Off-White + Electric Lime
+   Ver design.md § "Fitness Factory Brand Translation" para guía
+   de uso del color de marca.
+
+   USO: var(--token-name)
+   NO usar hex hardcodeados en componentes. Usar estos tokens.
+   ============================================================ */
+
+:root {
+
+  /* ─── BACKGROUNDS ────────────────────────────────────────── */
+  /* Jerarquía: primary → card → elevated. Diferencias sutiles  */
+  /* de charcoal; evitar negro puro para mantener profundidad.  */
+  --bg-primary:  #111313;              /* charcoal foundation — página, inputs */
+  --bg-card:     #191c1c;              /* dark charcoal — cards, sidebar */
+  --bg-elevated: #212527;              /* elevated charcoal — modal, dropdown */
+  --bg-overlay:  rgba(0, 0, 0, 0.72); /* backdrop de modales */
+  --bg-input:    #111313;              /* mismo que bg-primary */
+
+  /* ─── BORDERS ────────────────────────────────────────────── */
+  --border:       #2e3237;             /* graphite — cards, inputs */
+  --border-muted: rgba(46, 50, 55, 0.55); /* separadores de filas en tablas */
+
+  /* ─── TEXT ───────────────────────────────────────────────── */
+  --text-primary:   #f1f5f9;           /* off-white principal */
+  --text-secondary: #94a3b8;           /* labels, subtítulos, soporte */
+  --text-muted:     #475569;           /* placeholders, hints — solo usos no críticos */
+  --text-on-primary: #0d1000;          /* texto oscuro sobre superficies lime */
+
+  /* ─── BRAND — Electric Lime ──────────────────────────────── */
+  /* El color de marca de Fitness Factory. Usar con moderación. */
+  /* Regla 85/10/5: 85% neutrales, 10% tipografía, 5% brand.   */
+  /*                                                            */
+  /* USAR para: botones primarios, nav activo, foco, accents.  */
+  /* NO USAR para: estados semánticos (éxito/error/alerta),    */
+  /* múltiples elementos simultáneos, decoración masiva.       */
+  --brand:          #B7F500;              /* electric lime — identidad Fitness Factory */
+  --brand-hover:    #A3DB00;              /* lime ~10% más oscuro para hover */
+  --brand-active:   #8FBF00;              /* lime ~20% más oscuro para pressed */
+  --brand-soft:     rgba(183, 245, 0, 0.10); /* fondo sutil: nav activo, chips */
+  --brand-contrast: #0d1000;             /* texto/iconos oscuros sobre superficies lime */
+
+  /* ─── PRIMARY (alias de brand) ──────────────────────────── */
+  /* --primary apunta a brand para compatibilidad con todos     */
+  /* los componentes existentes. NO duplicar lógica.           */
+  --primary:        #B7F500;
+  --primary-hover:  #A3DB00;
+  --primary-subtle: rgba(183, 245, 0, 0.10);
+
+  /* ─── STATUS: INFO ───────────────────────────────────────── */
+  /* Azul semántico = información. NO es color de marca.        */
+  /* Usar para: enlaces informativos, tooltips, banners info.  */
+  --color-info:        #3b82f6;
+  --color-info-text:   #60a5fa;              /* texto sobre bg oscuro */
+  --color-info-subtle: rgba(59, 130, 246, 0.12);
+
+  /* ─── STATUS: SUCCESS ────────────────────────────────────── */
+  /* Verde semántico = estado positivo. DISTINTO del lime brand.*/
+  /* Membresías activas, operaciones exitosas.                  */
+  --color-success:        #22c55e;
+  --color-success-text:   #4ade80;              /* badge text sobre bg oscuro */
+  --color-success-subtle: rgba(34, 197, 94, 0.12);
+  --color-success-banner: rgba(34, 197, 94, 0.10);
+
+  /* ─── STATUS: WARNING ────────────────────────────────────── */
+  /* Membresías por vencer (≤7 días), alertas no críticas.      */
+  --color-warning:        #f59e0b;
+  --color-warning-text:   #f59e0b;
+  --color-warning-subtle: rgba(245, 158, 11, 0.15);
+
+  /* ─── STATUS: DANGER ─────────────────────────────────────── */
+  /* Membresías vencidas, errores, acciones destructivas.       */
+  --color-danger:        #ef4444;
+  --color-danger-text:   #f87171;              /* badge text sobre bg oscuro */
+  --color-danger-subtle: rgba(239, 68, 68, 0.15);
+  --color-danger-banner: rgba(239, 68, 68, 0.12);
+
+  /* ─── STATUS: FROZEN ─────────────────────────────────────── */
+  /* Membresías congeladas.                                     */
+  --color-frozen:        #eab308;
+  --color-frozen-text:   #eab308;
+  --color-frozen-subtle: rgba(234, 179, 8, 0.12);
+
+  /* ─── STATUS: NEUTRAL ────────────────────────────────────── */
+  /* Sin membresía, inactivo, estados indefinidos.             */
+  --color-neutral-subtle: rgba(148, 163, 184, 0.10);
+  --bg-row-hover:         rgba(255, 255, 255, 0.02);
+
+  /* ─── SPACING ────────────────────────────────────────────── */
+  /* Escala base 4px. No usar rem arbitrarios en componentes.  */
+  --space-1:  0.25rem;  /*  4px */
+  --space-2:  0.5rem;   /*  8px */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+
+  /* ─── RADIUS ─────────────────────────────────────────────── */
+  /* Mapa completo. Cada superficie tiene su token correcto.   */
+  --radius-sm:    6px;   /* collapse btn, icon btn */
+  --radius-md:    8px;   /* botones estándar */
+  --radius-input: 10px;  /* form inputs */
+  --radius-lg:    12px;  /* iconos de stat cards, list items */
+  --radius-card:  16px;  /* card surfaces */
+  --radius-xl:    24px;  /* avatar-lg (cliente-detalle) */
+  --radius-full:  999px; /* pills, filter chips, avatars circulares */
+  --avatar-lg-size: 6rem; /* 96px avatar de detalle */
+
+  /* ─── TYPOGRAPHY ─────────────────────────────────────────── */
+  /* Escala de font-size. Page h1 = --text-5xl (canónico).    */
+  --text-xs:   0.75rem;  /* 12px — badges, table headers uppercase */
+  --text-sm:   0.8rem;   /* 12.8px — labels de formulario */
+  --text-base: 0.9rem;   /* 14.4px — body principal */
+  --text-md:   0.95rem;  /* 15.2px — subtítulos de página */
+  --text-lg:   1rem;     /* 16px */
+  --text-xl:   1.1rem;   /* 17.6px — section h2 dentro de cards */
+  --text-2xl:  1.2rem;   /* 19.2px */
+  --text-3xl:  1.35rem;  /* 21.6px */
+  --text-4xl:  1.5rem;   /* 24px — stat values grandes */
+  --text-5xl:  1.75rem;  /* 28px — page-level h1 (CANÓNICO) */
+
+  /* ─── FONT WEIGHT ────────────────────────────────────────── */
+  --font-normal:   400;
+  --font-medium:   500;
+  --font-semibold: 600;
+  --font-bold:     700;
+
+  /* ─── MOTION ─────────────────────────────────────────────── */
+  /* Usar --transition-fast para hovers, --transition-layout   */
+  /* para cambios estructurales (sidebar collapse).            */
+  --duration-fast:   0.2s;
+  --duration-layout: 0.3s;
+  --easing-default:  ease;
+  --transition-fast:   color var(--duration-fast) var(--easing-default), background-color var(--duration-fast) var(--easing-default), border-color var(--duration-fast) var(--easing-default), box-shadow var(--duration-fast) var(--easing-default), opacity var(--duration-fast) var(--easing-default), transform var(--duration-fast) var(--easing-default);
+  --transition-color:  color var(--duration-fast) var(--easing-default), fill var(--duration-fast) var(--easing-default);
+  --transition-layout: margin-left var(--duration-layout) var(--easing-default), width var(--duration-layout) var(--easing-default), transform var(--duration-layout) var(--easing-default), padding var(--duration-layout) var(--easing-default);
+
+  @media (prefers-reduced-motion: reduce) {
+    --duration-fast:   0s;
+    --duration-layout: 0s;
+  }
+
+  /* ─── ELEVATION ──────────────────────────────────────────── */
+  /* Las cards se diferencian por color de fondo y borde, no    */
+  /* por sombra. Solo estos 3 casos usan box-shadow.           */
+  --shadow-focus: 0 0 0 3px rgba(183, 245, 0, 0.18); /* lime focus ring */
+  --shadow-login: 0 25px 50px rgba(0, 0, 0, 0.4);    /* login card (único) */
+  --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.5);     /* modal dialogs */
+
+  /* ─── LAYOUT ─────────────────────────────────────────────── */
+  --sidebar-width:     260px;
+  --sidebar-collapsed: 72px;
+  --content-max:       1200px; /* max-width de páginas estándar */
+  --content-form-max:  1000px; /* max-width de formularios */
+
+  /* ─── Z-INDEX ─────────────────────────────────────────────── */
+  --z-sidebar: 50;
+  --z-overlay: 99;
+  --z-modal:   100;
+
+}

@@ -1,0 +1,401 @@
+/* ============================================================
+   DASHBOARD — Fitness Factory
+   Estilos de la pantalla principal operativa.
+   Todos los valores usan tokens de src/styles/tokens.css.
+   ============================================================ */
+
+app-dashboard { display: block; }
+
+app-dashboard .dashboard {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+
+app-dashboard .hero-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: var(--space-5);
+  padding: var(--space-5);
+  align-items: start;
+}
+
+app-dashboard .eyebrow {
+  margin: 0 0 var(--space-1);
+  color: var(--primary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+app-dashboard h1 {
+  font-size: var(--text-5xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0;
+  text-wrap: balance;
+  line-height: 1.15;
+}
+
+app-dashboard .subtitle {
+  color: var(--text-secondary);
+  font-size: var(--text-md);
+  margin: var(--space-2) 0 0;
+  line-height: 1.4;
+}
+
+app-dashboard .hero-status {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--bg-primary);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+app-dashboard .hero-status.open {
+  border-color: var(--color-success-subtle);
+}
+
+app-dashboard .hero-status-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+app-dashboard .status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  border: 1px solid transparent;
+}
+
+app-dashboard .status-pill.is-open {
+  background: var(--color-success-subtle);
+  color: var(--color-success-text);
+}
+
+app-dashboard .status-pill.is-closed {
+  background: var(--color-neutral-subtle);
+  color: var(--text-secondary);
+}
+
+app-dashboard .hero-status-label {
+  color: var(--text-secondary);   /* era --text-muted: contraste insuficiente */
+  font-size: var(--text-xs);
+  letter-spacing: 0.03em;
+}
+
+app-dashboard .hero-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+app-dashboard .hero-metric-label {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+}
+
+app-dashboard .hero-metric strong {
+  color: var(--text-primary);
+  font-size: var(--text-4xl);       /* reducido de --text-5xl */
+  font-weight: var(--font-bold);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+app-dashboard .turno-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+app-dashboard .turno-grid div {
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-md);    /* era --radius-lg: más compacto */
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+app-dashboard .turno-grid span {
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+app-dashboard .turno-grid strong {
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+app-dashboard .positive { color: var(--color-success-text); }
+app-dashboard .negative { color: var(--color-danger-text); }
+
+app-dashboard .hero-copy-note {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  margin: 0;
+  line-height: 1.4;
+}
+
+app-dashboard .hero-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: var(--text-on-primary);
+  text-decoration: none;
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  transition: var(--transition-fast);
+  min-height: 36px;
+}
+
+app-dashboard .hero-action:hover {
+  background: var(--primary-hover);
+}
+
+app-dashboard .hero-action:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* ── SECTIONS (sin card wrapper) ─────────────────────────── */
+/*
+   Section-block ya no tiene background ni borde propio.
+   Las stat-cards y action-btns son las únicas superficies.
+   Esto elimina el card-in-card que existía antes.
+*/
+
+app-dashboard .section-block {
+  display: grid;
+  gap: var(--space-4);
+}
+
+app-dashboard .section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+app-dashboard h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+app-dashboard .section-note {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  margin: var(--space-1) 0 0;
+}
+
+/* ── STAT CARDS ───────────────────────────────────────────── */
+
+app-dashboard .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+app-dashboard .stat-card {
+  background: var(--bg-card);        /* era --bg-primary — ahora contrasta sobre la página */
+  border: 1px solid var(--border);
+  border-top: 3px solid transparent;
+  border-radius: var(--radius-card);
+  padding: var(--space-4);
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+app-dashboard .stat-card.success { border-top-color: var(--color-success); }
+app-dashboard .stat-card.warning { border-top-color: var(--color-warning); }
+app-dashboard .stat-card.danger  { border-top-color: var(--color-danger); }
+app-dashboard .stat-card.primary { border-top-color: var(--primary); }
+
+app-dashboard .stat-icon {
+  width: 40px;                       /* reducido de 52px */
+  height: 40px;
+  border-radius: var(--radius-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+app-dashboard .stat-icon.success { color: var(--color-success); background: var(--color-success-subtle); }
+app-dashboard .stat-icon.warning { color: var(--color-warning); background: var(--color-warning-subtle); }
+app-dashboard .stat-icon.danger  { color: var(--color-danger);  background: var(--color-danger-subtle); }
+app-dashboard .stat-icon.primary { color: var(--primary);       background: var(--primary-subtle); }
+
+app-dashboard .stat-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+app-dashboard .stat-label {
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: var(--font-medium);
+}
+
+app-dashboard .stat-value {
+  color: var(--text-primary);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+app-dashboard .stat-note {
+  color: var(--text-secondary);      /* era --text-muted: contraste insuficiente */
+  font-size: var(--text-sm);
+  line-height: 1.3;
+}
+
+/* ── QUICK ACTIONS (compact strip) ──────────────────────────
+   Diseño nuevo: botones horizontales compactos en lugar de
+   grandes action-cards con icon + title + description.
+   Objetivo: scannable, operativo, sin desperdicio vertical.
+   ──────────────────────────────────────────────────────────*/
+
+app-dashboard .actions-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+app-dashboard .action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  transition: var(--transition-fast);
+  min-height: 44px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+app-dashboard .action-btn:hover {
+  border-color: var(--primary);
+  background: var(--bg-elevated);
+}
+
+app-dashboard .action-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+app-dashboard .action-btn:active {
+  background: var(--primary-subtle);
+}
+
+app-dashboard .action-btn.primary {
+  border-color: var(--primary);
+  background: var(--primary-subtle);
+  color: var(--primary);
+}
+
+app-dashboard .action-btn.primary:hover {
+  background: var(--primary);
+  color: var(--text-on-primary);
+}
+
+app-dashboard .action-btn-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-secondary);
+  transition: color var(--duration-fast) var(--easing-default);
+}
+
+app-dashboard .action-btn:hover .action-btn-icon,
+app-dashboard .action-btn.primary .action-btn-icon {
+  color: inherit;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  app-dashboard .dashboard {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  app-dashboard .hero-card {
+    grid-template-columns: 1fr;
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  app-dashboard .hero-status-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  app-dashboard .hero-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Stats: 2 columnas en mobile — más comparables que 1 */
+  app-dashboard .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Valores de stat más compactos en 2 cols para evitar overflow */
+  app-dashboard .stat-value {
+    font-size: var(--text-3xl);
+  }
+
+  /* Acciones: 2 columnas en mobile */
+  app-dashboard .actions-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  app-dashboard .action-btn {
+    white-space: normal;
+  }
+
+  /* Turno grid: 1 columna en mobile para evitar overflow de montos */
+  app-dashboard .turno-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,93 @@
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>Registrar cobro</h1>
+      <p class="subtitle">Busca un cliente y registra el pago en caja</p>
+    </div>
+    <a routerLink="/caja" class="btn-secondary">Volver a caja</a>
+  </div>
+
+  @if (!turnoAbierto()) {
+    <div class="card warning">No hay un turno abierto. Debes abrir la caja primero.</div>
+  } @else {
+    <div class="card">
+      @if (message()) { <div class="banner" role="alert" [class.error]="isError()">{{ message() }}</div> }
+      <div class="grid">
+
+        <!-- Búsqueda de cliente -->
+        <div class="span-2">
+          <app-client-search
+            inputId="rp-cliente"
+            label="Cliente"
+            [selected]="clienteSeleccionado()"
+            (clienteSelected)="seleccionarCliente($event)"
+            (clienteCleared)="limpiarCliente()"
+          >
+            @if (clienteData()?.membresia_activa) {
+              <app-status-badge tone="success" [label]="'Membresía activa: ' + (clienteData()?.membresia_activa?.plan?.nombre || '—')"></app-status-badge>
+            } @else if (clienteData()) {
+              <app-status-badge tone="neutral" label="Sin membresía activa"></app-status-badge>
+            }
+          </app-client-search>
+        </div>
+
+        <!-- Selector de plan (solo cuando no tiene membresía activa) -->
+        @if (mostrarAsignarPlan()) {
+          <div class="field span-2 plan-picker-field">
+            <label>Asignar membresía</label>
+            <div class="plan-list" role="group" aria-label="Planes disponibles">
+              @for (plan of membresias.planes(); track plan.id) {
+                <button
+                  type="button"
+                  class="plan-option"
+                  [class.selected]="planSeleccionado()?.id === plan.id"
+                  (click)="seleccionarPlan(plan)"
+                  [attr.aria-pressed]="planSeleccionado()?.id === plan.id"
+                >
+                  <strong>{{ plan.nombre }}</strong>
+                  <span>{{ plan.duracion_dias }} día{{ plan.duracion_dias !== 1 ? 's' : '' }} · {{ plan.precio | currencyDop }}</span>
+                </button>
+              } @empty {
+                <p class="empty">Sin planes configurados. Ve a Configuración para agregarlos.</p>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Monto, método, concepto -->
+        <div class="field">
+          <label for="rp-monto">Monto</label>
+          <input id="rp-monto" type="number" min="0" step="0.01" [ngModel]="monto()" (ngModelChange)="monto.set($event); form.monto = $event" name="monto" />
+        </div>
+        <div class="field">
+          <label for="rp-metodo">Método</label>
+          <select id="rp-metodo" [(ngModel)]="form.metodo" name="metodo">
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="transferencia">Transferencia</option>
+          </select>
+        </div>
+        <div class="field span-2">
+          <label for="rp-concepto">Concepto</label>
+          <input id="rp-concepto" type="text" [ngModel]="concepto()" (ngModelChange)="concepto.set($event); form.concepto = $event" name="concepto" />
+        </div>
+
+        <!-- Vincular a membresía activa (solo cuando ya tiene una) -->
+        @if (!mostrarAsignarPlan() && clienteData()?.membresia_activa) {
+          <div class="field inline-check span-2">
+            <input type="checkbox" id="vincular" [ngModel]="vincularMembresia()" (ngModelChange)="vincularMembresia.set($event)" name="vincularMembresia" />
+            <label for="vincular">Vincular a membresía activa</label>
+          </div>
+        }
+      </div>
+
+      <div class="actions">
+        <button
+          class="btn-primary"
+          [disabled]="cobrarDeshabilitado()"
+          (click)="cobrar()"
+        >{{ saving() ? 'Procesando...' : (mostrarAsignarPlan() && planSeleccionado() ? 'Cobrar y asignar membresía' : 'Cobrar') }}</button>
+      </div>
+    </div>
+  }
+</div>

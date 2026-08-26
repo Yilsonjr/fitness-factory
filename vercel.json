@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist/gym-system/browser",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

@@ -1,0 +1,6 @@
+:host { display: block; }
+.page { max-width: var(--content-max); margin: 0 auto; padding: var(--space-6) var(--space-4); display: grid; gap: var(--space-5); }
+.header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+h1 { margin: 0; color: var(--text-primary); font-size: var(--text-5xl); font-weight: var(--font-bold); }
+.subtitle { margin: var(--space-1) 0 0; color: var(--text-secondary); font-size: var(--text-md); }
+@media (max-width: 768px) { .page { padding: var(--space-4); } .header { flex-direction: column; } }

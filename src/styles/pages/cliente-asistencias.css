@@ -1,0 +1,314 @@
+    app-cliente-asistencias { display: block; }
+
+    app-cliente-asistencias .page {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: var(--space-6) var(--space-4);
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    app-cliente-asistencias .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    app-cliente-asistencias .eyebrow {
+      margin: 0 0 var(--space-2);
+      color: var(--primary);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    app-cliente-asistencias h1 {
+      font-size: var(--text-5xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin: 0;
+      text-wrap: balance;
+    }
+
+    app-cliente-asistencias h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    app-cliente-asistencias .subtitle,
+    app-cliente-asistencias .section-note,
+    app-cliente-asistencias .client-status p,
+    app-cliente-asistencias .empty-state p,
+    app-cliente-asistencias .summary-note {
+      color: var(--text-secondary);
+      font-size: var(--text-md);
+      margin: var(--space-2) 0 0;
+    }
+
+    app-cliente-asistencias .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+    }
+
+    app-cliente-asistencias .client-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    app-cliente-asistencias .client-identity {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      min-width: 0;
+    }
+
+    app-cliente-asistencias .avatar-lg {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: var(--primary-subtle);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      flex-shrink: 0;
+    }
+
+    app-cliente-asistencias .avatar-lg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    app-cliente-asistencias .client-meta {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      min-width: 0;
+    }
+
+    app-cliente-asistencias .client-meta strong {
+      color: var(--text-primary);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-semibold);
+    }
+
+    app-cliente-asistencias .client-meta span {
+      color: var(--text-secondary);
+      font-size: var(--text-md);
+    }
+
+    app-cliente-asistencias .client-status {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: var(--space-2);
+      text-align: right;
+    }
+
+    app-cliente-asistencias .status-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--radius-full);
+      padding: var(--space-1) var(--space-3);
+      background: var(--primary-subtle);
+      color: var(--primary);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+    }
+
+    app-cliente-asistencias .summary-panel {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    app-cliente-asistencias .summary-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    app-cliente-asistencias .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    app-cliente-asistencias .summary-row {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      background: var(--bg-elevated);
+    }
+
+    app-cliente-asistencias .summary-row.primary { border-color: var(--primary-subtle); }
+    app-cliente-asistencias .summary-row.success { border-color: var(--color-success-subtle); }
+    app-cliente-asistencias .summary-row.danger { border-color: var(--color-danger-subtle); }
+    app-cliente-asistencias .summary-row.neutral { border-color: var(--border); }
+
+    app-cliente-asistencias .summary-label {
+      color: var(--text-secondary);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: var(--font-medium);
+    }
+
+    app-cliente-asistencias .summary-value {
+      color: var(--text-primary);
+      font-size: var(--text-4xl);
+      font-weight: var(--font-bold);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    app-cliente-asistencias .summary-note {
+      margin-top: 0;
+      font-size: var(--text-sm);
+    }
+
+    app-cliente-asistencias .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    app-cliente-asistencias .table-wrap {
+      overflow-x: auto;
+    }
+
+    app-cliente-asistencias table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    app-cliente-asistencias th {
+      text-align: left;
+      padding: var(--space-3) var(--space-2);
+      color: var(--text-secondary);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    app-cliente-asistencias td {
+      padding: var(--space-3) var(--space-2);
+      color: var(--text-primary);
+      font-size: var(--text-base);
+      border-bottom: 1px solid var(--border-muted);
+      vertical-align: top;
+    }
+
+    app-cliente-asistencias tr:hover td {
+      background: var(--bg-row-hover);
+    }
+
+    app-cliente-asistencias .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--radius-full);
+      padding: var(--space-1) var(--space-3);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+    }
+
+    app-cliente-asistencias .badge.success {
+      background: var(--color-success-subtle);
+      color: var(--color-success-text);
+    }
+
+    app-cliente-asistencias .badge.danger {
+      background: var(--color-danger-subtle);
+      color: var(--color-danger-text);
+    }
+
+    app-cliente-asistencias .empty-state,
+    app-cliente-asistencias .state-card {
+      text-align: center;
+    }
+
+    app-cliente-asistencias .state-card {
+      color: var(--text-secondary);
+    }
+
+    app-cliente-asistencias .banner-error {
+      background: var(--color-danger-banner);
+      border: 1px solid var(--color-danger-subtle);
+      border-radius: var(--radius-md);
+      color: var(--color-danger-text);
+      padding: var(--space-3) var(--space-4);
+    }
+
+    app-cliente-asistencias .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: var(--text-base);
+      font-weight: var(--font-semibold);
+      transition: var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    app-cliente-asistencias .btn-secondary:hover {
+      background: var(--bg-elevated);
+    }
+
+    app-cliente-asistencias .btn-secondary:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+
+    @media (max-width: 768px) {
+      app-cliente-asistencias .page {
+        padding: var(--space-4);
+      }
+
+      app-cliente-asistencias .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      app-cliente-asistencias .page-header,
+      app-cliente-asistencias .section-head,
+      app-cliente-asistencias .summary-header,
+      app-cliente-asistencias .client-card,
+      app-cliente-asistencias .client-identity,
+      app-cliente-asistencias .client-status {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      app-cliente-asistencias .btn-secondary {
+        width: 100%;
+      }
+    }
+  

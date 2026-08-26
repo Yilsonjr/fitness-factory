@@ -56,8 +56,8 @@ type VistaAcceso = 'usuarios' | 'roles';
                   <input id="user-pass" type="password" [(ngModel)]="nuevo.password" name="password" autocomplete="new-password" />
                 </div>
                 <div class="field">
-                  <label>Rol</label>
-                  <div class="readonly-chip">Recepcionista</div>
+                  <span class="field-label">Rol</span>
+                  <div class="readonly-chip" aria-label="Rol: Recepcionista">Recepcionista</div>
                 </div>
               </div>
 

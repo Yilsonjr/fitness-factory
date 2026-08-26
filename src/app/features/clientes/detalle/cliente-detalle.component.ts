@@ -79,9 +79,9 @@ type PagoVista = Pago & { membresia?: { id: string; fecha_inicio: string; fecha_
             <div>
               <p class="label">Acción</p>
               @if (currentMembership()!.estado === 'activa') {
-                <button class="btn-secondary" (click)="congelar()">Congelar membresía</button>
+                <button class="btn-secondary" [disabled]="savingMembresia()" (click)="congelar()">{{ savingMembresia() ? 'Guardando…' : 'Congelar membresía' }}</button>
               } @else if (currentMembership()!.estado === 'congelada') {
-                <button class="btn-secondary" (click)="reactivar()">Reactivar membresía</button>
+                <button class="btn-secondary" [disabled]="savingMembresia()" (click)="reactivar()">{{ savingMembresia() ? 'Guardando…' : 'Reactivar membresía' }}</button>
               }
             </div>
           </section>
@@ -266,6 +266,7 @@ export class ClienteDetalleComponent implements OnInit {
   anulando = signal(false);
   anulacionMensaje = signal('');
   anulacionError = signal(false);
+  savingMembresia = signal(false);
 
   currentMembership = computed(() => {
     const list = this.memberships();
@@ -402,16 +403,20 @@ export class ClienteDetalleComponent implements OnInit {
 
   async congelar() {
     const current = this.currentMembership();
-    if (!current) return;
+    if (!current || this.savingMembresia()) return;
+    this.savingMembresia.set(true);
     await this.membresias.congelarMembresia(current.id);
+    this.savingMembresia.set(false);
     this.toast.info('Membresía congelada', 'La membresía quedó en estado congelada.');
     await this.cargar();
   }
 
   async reactivar() {
     const current = this.currentMembership();
-    if (!current) return;
+    if (!current || this.savingMembresia()) return;
+    this.savingMembresia.set(true);
     await this.membresias.reactivarMembresia(current.id);
+    this.savingMembresia.set(false);
     this.toast.success('Membresía reactivada', 'La membresía volvió a estar activa.');
     await this.cargar();
   }

@@ -1,9 +1,16 @@
-// Generates src/environments/environment.ts from real environment variables.
-// Runs before ng build in Vercel (see package.json "build:vercel").
-// For local development, keep the hardcoded values in environment.ts as-is.
+// Generates src/environments/environment.ts from environment variables.
+// In Vercel: reads SUPABASE_URL and SUPABASE_ANON_KEY set in the dashboard.
+// Locally: reads from .env.local via dotenv (install: npm i -D dotenv).
 
 const fs = require('fs');
 const path = require('path');
+
+// Load .env.local for local development (ignored in production)
+try {
+  require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
+} catch {
+  // dotenv not installed — variables must come from the environment (Vercel)
+}
 
 const supabaseUrl = process.env['SUPABASE_URL'];
 const supabaseKey = process.env['SUPABASE_ANON_KEY'];

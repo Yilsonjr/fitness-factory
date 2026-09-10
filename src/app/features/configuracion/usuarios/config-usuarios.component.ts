@@ -35,9 +35,9 @@ type VistaAcceso = 'usuarios' | 'roles';
           <div class="table-head">
             <div>
               <h3>Usuarios</h3>
-              <p class="subtitle">Hoy solo se crea el perfil recepcionista; el modelo genérico requiere backend adicional.</p>
+              <p class="subtitle">Crea y gestiona los usuarios que acceden al sistema.</p>
             </div>
-            <button class="btn-primary" type="button" (click)="composerAbierto.set(!composerAbierto())">Nuevo usuario</button>
+            <button class="btn-primary" type="button" (click)="abrirComposer()">Nuevo usuario</button>
           </div>
 
           @if (composerAbierto()) {
@@ -56,8 +56,11 @@ type VistaAcceso = 'usuarios' | 'roles';
                   <input id="user-pass" type="password" [(ngModel)]="nuevo.password" name="password" autocomplete="new-password" />
                 </div>
                 <div class="field">
-                  <span class="field-label">Rol</span>
-                  <div class="readonly-chip" aria-label="Rol: Recepcionista">Recepcionista</div>
+                  <label for="user-rol">Rol</label>
+                  <select id="user-rol" [(ngModel)]="nuevo.rol" name="rol">
+                    <option value="recepcionista">Recepcionista</option>
+                    <option value="admin">Administrador</option>
+                  </select>
                 </div>
               </div>
 
@@ -94,7 +97,7 @@ type VistaAcceso = 'usuarios' | 'roles';
                     <tr>
                       <td>{{ user.nombre }}</td>
                       <td>{{ user.email }}</td>
-                      <td>{{ user.rol }}</td>
+                      <td>{{ user.rol === 'admin' ? 'Administrador' : 'Recepcionista' }}</td>
                       <td>
                         @if (user.activo) {
                           <app-status-badge tone="success" label="Activo"></app-status-badge>
@@ -105,7 +108,10 @@ type VistaAcceso = 'usuarios' | 'roles';
                       <td>
                         <div class="actions-inline">
                           @if (user.id !== auth.usuario()?.id) {
-                            <button class="link" type="button" (click)="alternarEstado(user)">{{ user.activo ? 'Desactivar' : 'Activar' }}</button>
+                            <button class="link" type="button" (click)="cambiarRol(user)">
+                              {{ user.rol === 'admin' ? 'Quitar admin' : 'Hacer admin' }}
+                            </button>
+                            <button class="link danger" type="button" (click)="alternarEstado(user)">{{ user.activo ? 'Desactivar' : 'Activar' }}</button>
                           } @else {
                             <span class="muted">Usuario actual</span>
                           }
@@ -121,19 +127,40 @@ type VistaAcceso = 'usuarios' | 'roles';
           }
         </section>
       } @else {
-        <section class="card future-card">
+        <section class="card">
           <h3>Roles y permisos</h3>
-          <p class="subtitle">No existe un backend RBAC para construir permisos granulares todavía.</p>
-          <div class="future-note">Future capability — backend support required</div>
+          <p class="subtitle">El sistema maneja dos roles con accesos diferenciados por módulo.</p>
 
           <div class="role-grid">
             <div class="role-card">
-              <strong>admin</strong>
-              <p>Dashboard administrativo, clientes, membresías, caja, POS, productos, reportes y configuración.</p>
+              <div class="role-head">
+                <strong>Administrador</strong>
+                <span class="role-badge admin">Admin</span>
+              </div>
+              <ul class="role-perms">
+                <li>✅ Dashboard completo</li>
+                <li>✅ Clientes y membresías</li>
+                <li>✅ Caja y punto de venta</li>
+                <li>✅ Productos (crear/editar)</li>
+                <li>✅ Acceso biométrico</li>
+                <li>✅ Reportes y finanzas</li>
+                <li>✅ Configuración del sistema</li>
+              </ul>
             </div>
             <div class="role-card">
-              <strong>recepcionista</strong>
-              <p>Dashboard operativo, clientes, membresías, caja, POS y productos.</p>
+              <div class="role-head">
+                <strong>Recepcionista</strong>
+                <span class="role-badge recep">Recepcionista</span>
+              </div>
+              <ul class="role-perms">
+                <li>✅ Dashboard operativo</li>
+                <li>✅ Clientes y membresías</li>
+                <li>✅ Caja y punto de venta</li>
+                <li>✅ Productos (solo ver)</li>
+                <li>✅ Acceso biométrico</li>
+                <li>❌ Reportes</li>
+                <li>❌ Configuración</li>
+              </ul>
             </div>
           </div>
         </section>
@@ -150,7 +177,7 @@ export class ConfigUsuariosComponent implements OnInit {
   message = signal('');
   isError = signal(false);
   composerAbierto = signal(false);
-  nuevo = { nombre: '', email: '', password: '' };
+  nuevo = { nombre: '', email: '', password: '', rol: 'recepcionista' as 'admin' | 'recepcionista' };
 
   usuariosFiltrados = computed(() => [...this.usuarios()].sort((a, b) => a.nombre.localeCompare(b.nombre)));
 
@@ -176,6 +203,11 @@ export class ConfigUsuariosComponent implements OnInit {
     this.loading.set(false);
   }
 
+  abrirComposer(): void {
+    this.nuevo = { nombre: '', email: '', password: '', rol: 'recepcionista' };
+    this.composerAbierto.set(true);
+  }
+
   async crearUsuario(): Promise<void> {
     const gimnasioId = this.auth.gimnasioId();
     if (!gimnasioId) return;
@@ -193,10 +225,28 @@ export class ConfigUsuariosComponent implements OnInit {
     }
 
     this.isError.set(false);
-    this.message.set('Usuario creado correctamente.');
-    this.nuevo = { nombre: '', email: '', password: '' };
+    this.message.set(`Usuario ${this.nuevo.rol === 'admin' ? 'administrador' : 'recepcionista'} creado correctamente.`);
+    this.nuevo = { nombre: '', email: '', password: '', rol: 'recepcionista' };
     this.composerAbierto.set(false);
     if (data) await this.cargar();
+  }
+
+  async cambiarRol(usuario: Usuario): Promise<void> {
+    const nuevoRol: 'admin' | 'recepcionista' = usuario.rol === 'admin' ? 'recepcionista' : 'admin';
+    const { error } = await this.supabase.client
+      .from('usuarios')
+      .update({ rol: nuevoRol })
+      .eq('id', usuario.id);
+
+    if (error) {
+      this.isError.set(true);
+      this.message.set(error.message);
+      return;
+    }
+
+    this.isError.set(false);
+    this.message.set(`${usuario.nombre} ahora es ${nuevoRol === 'admin' ? 'Administrador' : 'Recepcionista'}.`);
+    await this.cargar();
   }
 
   async alternarEstado(usuario: Usuario): Promise<void> {

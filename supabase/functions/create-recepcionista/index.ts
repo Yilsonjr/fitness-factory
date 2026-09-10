@@ -5,6 +5,7 @@ type Body = {
   email?: string;
   password?: string;
   gimnasioId?: string;
+  rol?: 'admin' | 'recepcionista';
 };
 
 const corsHeaders = {
@@ -39,6 +40,7 @@ Deno.serve(async req => {
   const email = body.email?.trim();
   const password = body.password?.trim();
   const gimnasioId = body.gimnasioId?.trim();
+  const rol: 'admin' | 'recepcionista' = body.rol === 'admin' ? 'admin' : 'recepcionista';
 
   if (!nombre || !email || !password || !gimnasioId) {
     return json({ error: 'Faltan campos obligatorios' }, 400);
@@ -64,7 +66,7 @@ Deno.serve(async req => {
     gimnasio_id: gimnasioId,
     nombre,
     email,
-    rol: 'recepcionista',
+    rol,
     activo: true,
   });
 

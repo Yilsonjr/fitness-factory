@@ -13,6 +13,15 @@ export class AuthService {
   isLoggedIn = computed(() => !!this._usuario());
   rol = computed(() => this._usuario()?.rol ?? null);
   isAdmin = computed(() => this._usuario()?.rol === 'admin');
+  isContador = computed(() => this._usuario()?.rol === 'contador');
+  isOperacional = computed(() => {
+    const rol = this._usuario()?.rol;
+    return rol === 'admin' || rol === 'recepcionista';
+  });
+  tieneAccesoReportes = computed(() => {
+    const rol = this._usuario()?.rol;
+    return rol === 'admin' || rol === 'contador';
+  });
   gimnasioId = computed(() => this._usuario()?.gimnasio_id ?? null);
 
   constructor(

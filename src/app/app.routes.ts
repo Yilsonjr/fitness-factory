@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, adminGuard, noAuthGuard } from './core/guards/auth.guard';
+import { authGuard, adminGuard, noAuthGuard, operacionGuard, reportesGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -29,6 +29,7 @@ export const routes: Routes = [
           },
           {
             path: 'nuevo',
+            canActivate: [operacionGuard],
             loadComponent: () =>
               import('./features/clientes/formulario/cliente-form.component').then(m => m.ClienteFormComponent),
           },
@@ -44,6 +45,7 @@ export const routes: Routes = [
           },
           {
             path: ':id/editar',
+            canActivate: [operacionGuard],
             loadComponent: () =>
               import('./features/clientes/formulario/cliente-form.component').then(m => m.ClienteFormComponent),
           },
@@ -51,6 +53,7 @@ export const routes: Routes = [
       },
       {
         path: 'membresias',
+        canActivate: [operacionGuard],
         children: [
           {
             path: '',
@@ -66,6 +69,7 @@ export const routes: Routes = [
       },
       {
         path: 'caja',
+        canActivate: [operacionGuard],
         children: [
           {
             path: '',
@@ -81,6 +85,7 @@ export const routes: Routes = [
       },
       {
         path: 'productos',
+        canActivate: [operacionGuard],
         children: [
           {
             path: '',
@@ -108,12 +113,13 @@ export const routes: Routes = [
       },
       {
         path: 'pos',
+        canActivate: [operacionGuard],
         loadComponent: () =>
           import('./features/pos/punto-venta.component').then(m => m.PuntoVentaComponent),
       },
       {
         path: 'reportes',
-        canActivate: [adminGuard],
+        canActivate: [reportesGuard],
         loadComponent: () =>
           import('./features/reportes/reportes.component').then(m => m.ReportesComponent),
         children: [

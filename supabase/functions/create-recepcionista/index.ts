@@ -5,7 +5,7 @@ type Body = {
   email?: string;
   password?: string;
   gimnasioId?: string;
-  rol?: 'admin' | 'recepcionista';
+  rol?: 'admin' | 'recepcionista' | 'contador';
 };
 
 const corsHeaders = {
@@ -40,7 +40,8 @@ Deno.serve(async req => {
   const email = body.email?.trim();
   const password = body.password?.trim();
   const gimnasioId = body.gimnasioId?.trim();
-  const rol: 'admin' | 'recepcionista' = body.rol === 'admin' ? 'admin' : 'recepcionista';
+  const rolesValidos = ['admin', 'recepcionista', 'contador'] as const;
+  const rol = rolesValidos.includes(body.rol as typeof rolesValidos[number]) ? body.rol! : 'recepcionista';
 
   if (!nombre || !email || !password || !gimnasioId) {
     return json({ error: 'Faltan campos obligatorios' }, 400);

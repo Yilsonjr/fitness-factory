@@ -2,7 +2,7 @@
 // MODELOS - GYM MANAGEMENT SYSTEM
 // ============================================================
 
-export type RolUsuario = 'admin' | 'recepcionista';
+export type RolUsuario = 'admin' | 'recepcionista' | 'contador';
 export type SexoTipo = 'M' | 'F';
 export type PeriodoPlan = 'diario' | 'semanal' | 'quincenal' | 'mensual';
 export type EstadoMembresia = 'activa' | 'vencida' | 'congelada' | 'cancelada';

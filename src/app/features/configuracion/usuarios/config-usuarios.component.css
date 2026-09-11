@@ -40,6 +40,9 @@ th { color: var(--text-secondary); font-size: var(--text-xs); text-transform: up
 .role-badge { font-size: var(--text-xs); font-weight: var(--font-semibold); padding: .2rem .6rem; border-radius: var(--radius-full); }
 .role-badge.admin { background: var(--primary-subtle); color: var(--primary); }
 .role-badge.recep { background: var(--color-neutral-subtle); color: var(--text-secondary); }
+.role-badge.cont { background: var(--color-warning-subtle); color: var(--color-warning-text); }
+.rol-select { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: .25rem .5rem; font-size: var(--text-sm); cursor: pointer; width: auto; }
+.rol-select:focus-visible { border-color: var(--primary); box-shadow: var(--shadow-focus); outline: none; }
 .role-perms { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
 .role-perms li { font-size: var(--text-sm); color: var(--text-secondary); }
 @media (max-width: 768px) { .grid, .role-grid { grid-template-columns: 1fr; } .section-head, .table-head, .actions { align-items: stretch; } .btn-primary, .btn-secondary { width: 100%; } }

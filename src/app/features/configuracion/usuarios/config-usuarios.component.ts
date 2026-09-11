@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, computed, signal } from '@a
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { Usuario } from '../../../core/models';
+import { Usuario, RolUsuario } from '../../../core/models';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge/status-badge.component';
 import { SkeletonListComponent } from '../../../shared/components/skeleton/skeleton-list.component';
 
@@ -60,6 +60,7 @@ type VistaAcceso = 'usuarios' | 'roles';
                   <select id="user-rol" [(ngModel)]="nuevo.rol" name="rol">
                     <option value="recepcionista">Recepcionista</option>
                     <option value="admin">Administrador</option>
+                    <option value="contador">Contador</option>
                   </select>
                 </div>
               </div>
@@ -108,9 +109,11 @@ type VistaAcceso = 'usuarios' | 'roles';
                       <td>
                         <div class="actions-inline">
                           @if (user.id !== auth.usuario()?.id) {
-                            <button class="link" type="button" (click)="cambiarRol(user)">
-                              {{ user.rol === 'admin' ? 'Quitar admin' : 'Hacer admin' }}
-                            </button>
+                            <select class="rol-select" [ngModel]="user.rol" (ngModelChange)="cambiarRol(user, $event)" [attr.aria-label]="'Rol de ' + user.nombre">
+                              <option value="recepcionista">Recepcionista</option>
+                              <option value="admin">Administrador</option>
+                              <option value="contador">Contador</option>
+                            </select>
                             <button class="link danger" type="button" (click)="alternarEstado(user)">{{ user.activo ? 'Desactivar' : 'Activar' }}</button>
                           } @else {
                             <span class="muted">Usuario actual</span>
@@ -162,6 +165,21 @@ type VistaAcceso = 'usuarios' | 'roles';
                 <li>❌ Configuración</li>
               </ul>
             </div>
+            <div class="role-card">
+              <div class="role-head">
+                <strong>Contador</strong>
+                <span class="role-badge cont">Contador</span>
+              </div>
+              <ul class="role-perms">
+                <li>✅ Dashboard (solo ver)</li>
+                <li>✅ Clientes (solo consultar)</li>
+                <li>✅ Reportes y finanzas completos</li>
+                <li>❌ Caja / cobros</li>
+                <li>❌ Membresías</li>
+                <li>❌ Punto de venta</li>
+                <li>❌ Configuración</li>
+              </ul>
+            </div>
           </div>
         </section>
       }
@@ -177,7 +195,7 @@ export class ConfigUsuariosComponent implements OnInit {
   message = signal('');
   isError = signal(false);
   composerAbierto = signal(false);
-  nuevo = { nombre: '', email: '', password: '', rol: 'recepcionista' as 'admin' | 'recepcionista' };
+  nuevo = { nombre: '', email: '', password: '', rol: 'recepcionista' as 'admin' | 'recepcionista' | 'contador' };
 
   usuariosFiltrados = computed(() => [...this.usuarios()].sort((a, b) => a.nombre.localeCompare(b.nombre)));
 
@@ -204,7 +222,7 @@ export class ConfigUsuariosComponent implements OnInit {
   }
 
   abrirComposer(): void {
-    this.nuevo = { nombre: '', email: '', password: '', rol: 'recepcionista' };
+    this.nuevo = { nombre: '', email: '', password: '', rol: 'recepcionista' as const };
     this.composerAbierto.set(true);
   }
 
@@ -231,8 +249,8 @@ export class ConfigUsuariosComponent implements OnInit {
     if (data) await this.cargar();
   }
 
-  async cambiarRol(usuario: Usuario): Promise<void> {
-    const nuevoRol: 'admin' | 'recepcionista' = usuario.rol === 'admin' ? 'recepcionista' : 'admin';
+  async cambiarRol(usuario: Usuario, nuevoRol: RolUsuario): Promise<void> {
+    if (nuevoRol === usuario.rol) return;
     const { error } = await this.supabase.client
       .from('usuarios')
       .update({ rol: nuevoRol })
@@ -244,8 +262,9 @@ export class ConfigUsuariosComponent implements OnInit {
       return;
     }
 
+    const rolLabel: Record<RolUsuario, string> = { admin: 'Administrador', recepcionista: 'Recepcionista', contador: 'Contador' };
     this.isError.set(false);
-    this.message.set(`${usuario.nombre} ahora es ${nuevoRol === 'admin' ? 'Administrador' : 'Recepcionista'}.`);
+    this.message.set(`${usuario.nombre} ahora es ${rolLabel[nuevoRol]}.`);
     await this.cargar();
   }
 

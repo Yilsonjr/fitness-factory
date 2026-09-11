@@ -30,6 +30,30 @@ export const adminGuard: CanActivateFn = () => {
   );
 };
 
+// Allows admin + recepcionista. Blocks contador.
+export const operacionGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  return toObservable(auth.loading).pipe(
+    filter(loading => !loading),
+    take(1),
+    map(() => auth.isOperacional() || router.createUrlTree(['/dashboard'])),
+  );
+};
+
+// Allows admin + contador. Blocks recepcionista.
+export const reportesGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  return toObservable(auth.loading).pipe(
+    filter(loading => !loading),
+    take(1),
+    map(() => auth.tieneAccesoReportes() || router.createUrlTree(['/dashboard'])),
+  );
+};
+
 export const noAuthGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);

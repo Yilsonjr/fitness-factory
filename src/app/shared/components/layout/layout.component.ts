@@ -1,5 +1,4 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
-import { TitleCasePipe } from '@angular/common';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -10,7 +9,7 @@ import { ReciboService } from '../../../core/services/recibo.service';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TitleCasePipe, NgOptimizedImage, BreadcrumbsComponent, ToastStackComponent, ReciboModalComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgOptimizedImage, BreadcrumbsComponent, ToastStackComponent, ReciboModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -57,51 +56,53 @@ import { ReciboService } from '../../../core/services/recibo.service';
             @if (!collapsed()) { <span>Clientes</span> }
           </a>
 
-          <a routerLink="/membresias" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Membresías' : null">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <rect x="1" y="4" width="22" height="16" rx="2"/>
-              <path d="M1 10h22"/>
-            </svg>
-            @if (!collapsed()) { <span>Membresías</span> }
-          </a>
+          @if (auth.isOperacional()) {
+            <a routerLink="/membresias" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Membresías' : null">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="1" y="4" width="22" height="16" rx="2"/>
+                <path d="M1 10h22"/>
+              </svg>
+              @if (!collapsed()) { <span>Membresías</span> }
+            </a>
 
-          <a routerLink="/caja" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Caja' : null">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <line x1="12" y1="1" x2="12" y2="23"/>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
-            @if (!collapsed()) { <span>Caja</span> }
-          </a>
+            <a routerLink="/caja" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Caja' : null">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              @if (!collapsed()) { <span>Caja</span> }
+            </a>
 
-          <a routerLink="/pos" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Punto de Venta' : null">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <rect x="2" y="3" width="20" height="14" rx="2"/>
-              <path d="M8 21h8M12 17v4"/>
-            </svg>
-            @if (!collapsed()) { <span>Punto de Venta</span> }
-          </a>
+            <a routerLink="/pos" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Punto de Venta' : null">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+              @if (!collapsed()) { <span>Punto de Venta</span> }
+            </a>
 
-          <a routerLink="/productos" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Productos' : null">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-              <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-              <line x1="12" y1="12" x2="12" y2="12"/>
-            </svg>
-            @if (!collapsed()) { <span>Productos</span> }
-          </a>
+            <a routerLink="/productos" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Productos' : null">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                <line x1="12" y1="12" x2="12" y2="12"/>
+              </svg>
+              @if (!collapsed()) { <span>Productos</span> }
+            </a>
 
-          <a routerLink="/acceso" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Acceso biométrico' : null">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M12 2C9.5 2 7.5 4 7.5 7c0 4 4.5 9 4.5 9s4.5-5 4.5-9c0-3-2-5-4.5-5z"/>
-              <line x1="9.5" y1="7" x2="9.5" y2="13"/>
-              <line x1="11" y1="6" x2="11" y2="14"/>
-              <line x1="12.5" y1="5.5" x2="12.5" y2="14"/>
-              <line x1="14" y1="6.5" x2="14" y2="13"/>
-            </svg>
-            @if (!collapsed()) { <span>Acceso</span> }
-          </a>
+            <a routerLink="/acceso" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Acceso biométrico' : null">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 2C9.5 2 7.5 4 7.5 7c0 4 4.5 9 4.5 9s4.5-5 4.5-9c0-3-2-5-4.5-5z"/>
+                <line x1="9.5" y1="7" x2="9.5" y2="13"/>
+                <line x1="11" y1="6" x2="11" y2="14"/>
+                <line x1="12.5" y1="5.5" x2="12.5" y2="14"/>
+                <line x1="14" y1="6.5" x2="14" y2="13"/>
+              </svg>
+              @if (!collapsed()) { <span>Acceso</span> }
+            </a>
+          }
 
-          @if (auth.isAdmin()) {
+          @if (auth.tieneAccesoReportes()) {
             <div class="nav-divider"></div>
 
             <a routerLink="/reportes" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Reportes' : null">
@@ -113,13 +114,15 @@ import { ReciboService } from '../../../core/services/recibo.service';
               @if (!collapsed()) { <span>Reportes</span> }
             </a>
 
-            <a routerLink="/configuracion" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Configuración' : null">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-              </svg>
-              @if (!collapsed()) { <span>Configuración</span> }
-            </a>
+            @if (auth.isAdmin()) {
+              <a routerLink="/configuracion" routerLinkActive="active" ariaCurrentWhenActive="page" class="nav-item" [attr.aria-label]="collapsed() ? 'Configuración' : null">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+                @if (!collapsed()) { <span>Configuración</span> }
+              </a>
+            }
           }
         </nav>
 
@@ -131,7 +134,7 @@ import { ReciboService } from '../../../core/services/recibo.service';
             @if (!collapsed()) {
               <div class="user-details">
                 <span class="user-name">{{ auth.usuario()?.nombre }}</span>
-                <span class="user-role">{{ auth.usuario()?.rol | titlecase }}</span>
+                <span class="user-role">{{ auth.isAdmin() ? 'Administrador' : auth.isContador() ? 'Contador' : 'Recepcionista' }}</span>
               </div>
             }
           </div>
